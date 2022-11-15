@@ -1,12 +1,15 @@
 from flask import Flask, render_template, request
-
+from Fortuna import dice
 
 APP = Flask(__name__)
 
 
-@APP.route("/")
+@APP.route("/", methods=["GET", "POST"])
 def home_page():
-    return render_template("home.html")
+    rolls = request.values.get("rolls", "1")
+    sides = request.values.get("sides", "10")
+    rand_number = dice(int(rolls), int(sides))
+    return render_template("home.html", number=rand_number)
 
 
 @APP.route("/about")
